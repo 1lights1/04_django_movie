@@ -1,17 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ movie.title }}</h1>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-10 col-lg-8">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'movies:index' %}">Home</a></li>
+        <li class="breadcrumb-item active">{{ movie.title }}</li>
+      </ol>
+    </nav>
 
-<p>{{ movie.description }}</p>
-<p>{{ movie.director }}</p>
+    <div class="card shadow-lg border-0">
+      <div class="card-body p-5">
+        <h1 class="display-4 fw-bold mb-2">{{ movie.title }}</h1>
+        <p class="text-muted fs-5 mb-4">Director: <span class="text-dark fw-semibold">{{ movie.director }}</span></p>
+        
+        <hr class="my-4">
+        
+        <h5 class="fw-bold mb-3">줄거리</h5>
+        <p class="lead text-secondary mb-5" style="line-height: 1.8;">
+          {{ movie.description }}
+        </p>
 
-<a href="{% url 'movies:update' movie.pk %}">수정</a>
-
-<form action="{% url 'movies:delete' movie.pk %}" method="POST">
-  {% csrf_token %}
-  <button type="submit">삭제</button>
-</form>
-
-<a href="{% url 'movies:index' %}">목록으로</a>
+        <div class="d-flex gap-2 justify-content-end">
+          <a href="{% url 'movies:index' %}" class="btn btn-outline-secondary px-4">목록</a>
+          <a href="{% url 'movies:update' movie.pk %}" class="btn btn-warning px-4">수정</a>
+          
+          <form action="{% url 'movies:delete' movie.pk %}" method="POST" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger px-4">삭제</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
