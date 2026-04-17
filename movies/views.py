@@ -5,7 +5,13 @@ from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 
-def index(request): pass
+def index(request):
+    if request.method != 'GET':
+        return redirect('movies:index')
+
+    movies = Movie.objects.all()
+    return render(request, 'movies/index.html', {'movies': movies})
+
 
 def create(request):
     if request.method == 'POST':
@@ -17,7 +23,13 @@ def create(request):
         form = MovieForm()
     return render(request, 'movies/create.html', {'form': form})
 
-def detail(request, pk): pass
+def detail(request, pk):
+    if request.method != 'GET':
+        return redirect('movies:index')
+
+    movie = get_object_or_404(Movie, pk=pk)
+    return render(request, 'movies/detail.html', {'movie': movie})
+
 
 # F407: 영화 데이터 수정 페이지 및 로직
 @require_http_methods(["GET", "POST"]) # NF402: HTTP Method 제한
@@ -40,4 +52,10 @@ def update(request, pk):
     }
     return render(request, 'movies/update.html', context)
 
-def delete(request, pk): pass
+
+def delete(request, pk):
+    if request.method == 'POST':
+        movie = get_object_or_404(Movie, pk=pk)
+        movie.delete()
+        return redirect('movies:index')
+    return redirect('movies:detail', pk)
