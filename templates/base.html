@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <a href="{% url 'movies:index' %}">HOME</a>
+  <a href="{% url 'movies:create' %}">CREATE</a>
+  {% block content %}{% endblock %}
+</body>
+</html>
