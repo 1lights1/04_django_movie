@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ movie.title }}</h1>
+
+<p>{{ movie.description }}</p>
+<p>{{ movie.director }}</p>
+
+<a href="{% url 'movies:update' movie.pk %}">수정</a>
+
+<form action="{% url 'movies:delete' movie.pk %}" method="POST">
+  {% csrf_token %}
+  <button type="submit">삭제</button>
+</form>
+
+<a href="{% url 'movies:index' %}">목록으로</a>
+{% endblock %}
