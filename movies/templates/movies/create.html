@@ -1,9 +1,22 @@
-def create(request):
-    if request.method == 'POST':
-        form = MovieForm(request.POST)
-        if form.is_valid():
-            movie = form.save()
-            return redirect('movies:detail', movie.pk)
-    else:
-        form = MovieForm()
-    return render(request, 'movies/create.html', {'form': form})
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">CREATE</h1>
+    
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form action="{% url 'movies:create' %}" method="POST">
+          {% csrf_token %}
+          
+          {{ form.as_p }}
+          
+          <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-primary me-2">등록</button>
+            <a href="{% url 'movies:index' %}" class="btn btn-outline-secondary">BACK</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
